@@ -5,17 +5,16 @@ for (let i = 0; i < 3; i++) {
     repos.innerHTML += skeleton + "\n";
 }
 
-fetch("https://api.github.com/users/namefox/repos").then((r) => r.json()).then((json) => {
+const parseRepoData = (json) => {
     if (json.message) {
         console.log(json);
         repos.innerHTML = "<p><br>error loading projects. try again later.<br>go to my <a href=\"https://github.com/namefox\">github</a> and <a href=\"https://namefox.itch.io\">itch.io</a> pages to see my projects.<br><br>" + json.message.toLowerCase().split(" (")[0] + "</p>";
         return;
     }
 
-    console.log("Gathered repository data (" + json.length + " public repos)");
     repos.innerHTML = "";
 
-    const addGit = (item) => {
+    json.forEach(item => {
         if (item.name === "namefox.github.io") return;
 
         const div = document.createElement("div");
@@ -39,13 +38,21 @@ fetch("https://api.github.com/users/namefox/repos").then((r) => r.json()).then((
         div.append(description);
 
         repos.append(div);
-    }
-
-    json.forEach(item => {
-        addGit(item);
     });
 
     if (repos.childElementCount == 0) {
         repos.innerHTML = "<p><br>nothing here yet :(</p>";
     }
-});
+};
+
+let saved = sessionStorage.getItem("Repos");
+if (saved) {
+    console.log("Repository data gathered from session");
+    parseRepoData(JSON.parse(saved));
+} else {
+    fetch("https://api.github.com/users/namefox/repos").then((r) => r.json()).then((json) => {
+        parseRepoData(json);
+        sessionStorage.setItem("Repos", JSON.stringify(json));
+        console.log("Repository data requested from API");
+    });
+}

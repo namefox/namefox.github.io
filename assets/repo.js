@@ -25,21 +25,27 @@ const findReadme = (json) => {
 const findImage = (json) => {
     json.forEach(item => {
         if (item.name === "favicon.ico") {
-            return "<img src=\"" + item.download_url + "\">";
+            return item.download_url;
         }
     });
 
-    return "<img src=\"./repo.png\">";
+    return "./repo.png";
 };
 
-fetch(`https://api.github.com/repos/namefox/${repoParam}/contents`).then((r) => r.json()).then((json) => {
+const loadJSON = (json) => {
     if (json.message === "Not Found") {
         document.title = "namefox - not found";
         image.innerHTML = "<img src=\"./repo.png\">";
         repoName.innerHTML = "not found";
-        readme.innerHTML = "<h2>repository not found</h2>\n<p><a href=\"..\">go back</a></p>";
+        readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
         return;
+    } else if (json.message) {
+        document.title = "namefox - not err";
+        image.innerHTML = "<img src=\"./repo.png\">";
+        repoName.innerHTML = "error";
+        readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
+        repos.innerHTML = "";
     }
 
     document.title = "namefox - " + repoParam;
@@ -47,5 +53,18 @@ fetch(`https://api.github.com/repos/namefox/${repoParam}/contents`).then((r) => 
     repoName.innerHTML = repoParam;
     findReadme(json).then((t) => readme.innerHTML = marked.parse(t));
 
-    image.innerHTML = findImage(json);
-});
+    image.innerHTML = "<img src=\"" + findImage(json) + "\">";
+    shortcutIcon.href = findImage(json);
+};
+
+let saved = sessionStorage.getItem(repoParam + "Contents");
+if (saved) {
+    console.log("Project data gathered from session");
+    loadJSON(JSON.parse(saved));
+} else {
+    fetch(`https://api.github.com/repos/namefox/${repoParam}/contents`).then((r) => r.json()).then((json) => {
+        loadJSON(json);
+        sessionStorage.setItem(repoParam + "Contents", JSON.stringify(json));
+        console.log("Project data requested from API");
+    });
+}
