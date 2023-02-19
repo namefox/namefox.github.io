@@ -1,0 +1,112 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arvo, sans-serif;
+    text-align: center;
+}
+
+body,html {
+    height: 100%;
+}
+
+body {
+    background-color: #111;
+    color: white;
+}
+
+a {
+    color: #FD4239;
+    text-decoration: none;
+    transition: .3s filter;
+}
+
+a:hover {
+    filter: invert(75%);
+}
+
+.banner {
+    width: 100%;
+    height: 50%;
+    color: #FD4239;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner img {
+    width: 128px;
+    border-radius: 100%;
+    margin-right: 25px;
+}
+
+.banner h1 {
+    font-size: xxx-large;
+}
+
+.list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+.repo {
+    margin: 25px;
+    padding: 50px;
+    background-color: #0b0b0b;
+    border-radius: 50px;
+    box-shadow: 0 5px 10px black;
+    transition: .3s all;
+}
+
+.skeleton-line {
+    width: 100px;
+    height: .5rem;
+    margin-top: 5px;
+    background-color: gray;
+    animation: skeleton-pulse 1s infinite alternate;
+}
+
+@keyframes skeleton-pulse {
+    from, to {
+        background-color: gray;
+    }
+
+    100% {
+        background-color: darkgray;
+    }
+}
+
+
+h2 .skeleton-line {
+    height: 1rem;
+    width: 120;
+}
+
+.description.skeleton-line {
+    width: 80px;
+}
+
+.repo:hover {
+    box-shadow: 0 20px 20px black;
+    transform: scale(1.1);
+}
+
+.repo:active {
+    box-shadow: 0 0 20px black;
+    background-color: black;
+    transform: scale(1.0);
+}
+
+.description {
+    margin-top: 25px;
+}
+
+@font-face {
+    font-family: Arvo;
+    src: url(./assets/Arvo-Regular.ttf);
+
+    font-family: ArvoBold;
+    font-weight: bold;
+    src: url(./assets/Arvo-Bold.ttf);
+}
