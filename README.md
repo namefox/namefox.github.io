@@ -1,5 +1,3 @@
-![](https://github.com/namefox/namefox/blob/main/assets/git_bg.png)
+![](https://github.com/namefox/namefox.github.io/blob/main/assets/git_bg.png)
 
-i make stuff sometimes
-
-[itch.io](https://namefox.itch.io) | [twitter](https://twitter.com/namefox_)
+a website i made that lists all of my projects, along with information for each one.

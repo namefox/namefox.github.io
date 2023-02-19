@@ -67,6 +67,11 @@ a:hover {
     animation: skeleton-pulse 1s infinite alternate;
 }
 
+.skeleton-line.big {
+    width: 250px;
+    height: 2rem;
+}
+
 @keyframes skeleton-pulse {
     from, to {
         background-color: gray;
@@ -80,7 +85,7 @@ a:hover {
 
 h2 .skeleton-line {
     height: 1rem;
-    width: 120;
+    width: 120px;
 }
 
 .description.skeleton-line {
@@ -98,8 +103,19 @@ h2 .skeleton-line {
     transform: scale(1.0);
 }
 
+.repo.noscale:hover {transform: scale(1);}
+.repo.noscale:active {background-color: #0b0b0b;box-shadow: 0 20px 20px black;}
+
 .description {
     margin-top: 25px;
+}
+
+.skeleton-image {
+    width: 128px;
+    height: 128px;
+    animation: skeleton-pulse 1s infinite alternate;
+    border-radius: 100%;
+    margin-right: 25px;
 }
 
 @font-face {
