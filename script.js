@@ -10,7 +10,7 @@ fetch("https://api.github.com/users/namefox/repos").then((r) => r.json()).then((
     repos.innerHTML = "";
 
     const addGit = (item) => {
-        if (item.name === "namefox") return;
+        if (item.name === "namefox.github.io") return;
 
         const div = document.createElement("div");
         div.id = item.name;
