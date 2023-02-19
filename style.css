@@ -126,3 +126,15 @@ h2 .skeleton-line {
     font-weight: bold;
     src: url(./assets/Arvo-Bold.ttf);
 }
+
+.markdown {
+    line-height: 2rem;
+}
+
+.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
+    margin-bottom: 20px;
+}
+
+.markdown img {
+    max-width: 100%;
+}
