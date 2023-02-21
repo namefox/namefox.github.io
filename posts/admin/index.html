@@ -18,7 +18,57 @@
     
         <p><a href="..">go back</a></p><br>
 
-        <p>work in progress!</p>
+        <div class="button-pane">
+            <button id="writePost" data-open-page>write new post</button>
+            <button id="editPost" data-open-page>edit post</button>
+            <button id="reviewComments" data-open-page>review comments</button>
+        </div>
+
+        <style>
+            #newPost,
+            .page {
+                height: 90%;
+            }
+
+            .page {
+                margin: 0 auto;
+                width: 90%;
+                border: 1px solid gray;
+            }
+
+            #content {
+                background-color: black;
+                color: white;
+                border: 1px solid white;
+                width: 90%;
+                height: 75%;
+                min-height: 75%;
+            }
+        </style>
+
+        <div class="page" data-btn="writePost">
+            <h1>write post</h1>
+            <form id="newPost">
+                <input id="title" placeholder="title" type="text"><br>
+                <input id="description" placeholder="description" type="text"><br>
+                <input id="category" placeholder="category" type="text"><br>
+                <input id="type" placeholder="type" type="text"><br>
+                <p>upload image: <input id="image" placeholder="image" type="file"></p>
+                <textarea id="content"># title
+description
+
+&lt;!-- markdown supported --&gt;</textarea><br>
+                <input type="submit" value="upload">
+            </form>
+        <br></div><br>
+
+        <div class="page invisible" data-btn="editPost">
+
+        <br></div><br>
+
+        <div class="page invisible" data-btn="reviewComments">
+
+        <br></div><br>
     </div>
 
     <div class="banner" id="skeletonPage">
@@ -26,6 +76,7 @@
         <div class="skeleton-line big"></div>
     </div>
 
+    <script type="module" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="script.js" type="module"></script>
 </body>
 </html>

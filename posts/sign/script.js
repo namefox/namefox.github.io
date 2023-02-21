@@ -68,7 +68,10 @@ const createAccount = () => {
 };
 
 const signIntoAccount = () => {
-
+    authMod.signInWithEmailAndPassword(auth, email.value, password.value).then((result) => {
+        const redirect = new URLSearchParams(window.location.search).get("redirect");
+        if (redirect) window.location.href = redirect;
+    });
 };
 
 const checkSignUpRequirements = () => {

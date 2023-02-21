@@ -46,6 +46,32 @@ authMod.onAuthStateChanged(auth, (user) => {
     });
 });
 
+const post = new URLSearchParams(window.location.search).get("post");
+
+const getURL = (url) => {
+    return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'text';
+
+        xhr.onload = () => {
+            resolve(xhr.response);
+        };
+
+        xhr.open('GET', url);
+        xhr.send();
+    });
+};
+
+const parseData = (url) => {
+    return new Promise((resolve) => {
+        getURL(url).then((data) => {
+            resolve(JSON.parse(data));
+        });
+    });
+};
+
+if (!post) {
+
 if (sessionStorage.getItem("Posts") != null) {
     console.log("Posts gathered from session");
 
@@ -60,23 +86,23 @@ if (sessionStorage.getItem("Posts") != null) {
     storageMod.listAll(postsRef).then((result) => {
         posts.innerHTML = "";
 
-        result.items.forEach((ref) => {
-            const data = storageMod.ref(ref, "/data");
-            const img = storageMod.ref(ref, "/img");
+        result.prefixes.forEach((ref) => {
+            const dataRef = storageMod.ref(ref, "/data");
+            const img = storageMod.ref(ref, "/image");
 
-            storageMod.getDownloadURL(data).then((url) => {
-                let data = parseData(url);
-
-                storageMod.getDownloadURL(img).then((image) => {
-                    const template = `
-    <div class="repo noscale markdown">
-        <img src=${image}>
-        <h1>${data.name}</h1>
-        <p>${data.description}</p>
-        <br><p class="darker">${data.type} | ${data.category}</p>
-    </div>`;
-                    posts.innerHTML += template;
-                    sessionStorage.setItem("Posts", posts.innerHTML);
+            storageMod.getDownloadURL(dataRef).then((url) => {
+                parseData(url).then((data) => {
+                    storageMod.getDownloadURL(img).then((image) => {
+                        const template = `
+                        <div class="repo noscale markdown">
+                            <img src=${image} height="auto" width="600px">
+                            <h1><a href="?post=${data.name.replaceAll(" ", "_")}">${data.name}</a></h1>
+                            <p>${data.description}</p>
+                            <br><p class="darker">${data.type} | ${data.category}</p>
+                        </div>`;
+                        posts.innerHTML += template;
+                        sessionStorage.setItem("Posts", posts.innerHTML);
+                    });
                 });
             });
         });
@@ -85,7 +111,32 @@ if (sessionStorage.getItem("Posts") != null) {
     setTimeout(() => {
         if (posts.childElementCount == 0)
             posts.innerHTML += "<p><br>nothing here yet :(</p>";
-    }, 2500);
+    }, 5000);
 
     console.log("Posts gathered from API");
+}
+
+} else {
+
+document.title = "namefox - loading";
+title.innerHTML = "loading";
+
+const dataRef = storageMod.ref(storage, "posts/" + post + "/data");
+const contentRef = storageMod.ref(storage, "posts/" + post + "/content");
+const imageRef = storageMod.ref(storage, "posts/" + post + "/image");
+
+storageMod.getDownloadURL(imageRef).then((img) => {
+    storageMod.getDownloadURL(dataRef).then((url) => {
+        parseData(url).then((data) => {
+            storageMod.getDownloadURL(contentRef).then((url2) => {
+                getURL(url2).then((content) => {
+                    document.title = "namefox - " + data.name;
+            
+                    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p>`;
+                })
+            });
+        });
+    });
+});
+
 }
