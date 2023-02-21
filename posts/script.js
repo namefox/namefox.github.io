@@ -1,6 +1,8 @@
 const posts = document.getElementById("posts");
 
 const skeleton = `<div class="repo noscale markdown"><div class="post-image"><div class="skeleton-image"></div></div><h1><div class="skeleton-line big"></div></h1><p><div class="skeleton-line"></div></p><br><p class="darker"><div class="skeleton-line"></div></p></div>`;
+
+
 for (let i = 0; i < 3; i++) {
     posts.innerHTML += skeleton;
 }
@@ -70,6 +72,44 @@ const parseData = (url) => {
     });
 };
 
+const isJson = (str) => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+const loadComments = (post) => {
+    return new Promise(resolve => {
+        const commentList = document.querySelector(".comments");
+        const comments = [];
+    
+        const ref = storageMod.ref(storage, "posts/" + post);
+        storageMod.listAll(ref).then((result) => {
+            let itemCount = result.items.length;
+            let i = 0;
+            result.items.forEach((item) => {
+                storageMod.getDownloadURL(item).then((url) => {
+                    getURL(url).then((data) => {
+                        if (isJson(data)) {
+                            const json = JSON.parse(data);
+                            const isValidComment = json.comment;
+
+                            if (isValidComment)
+                                comments.push(json);
+                        }
+
+                        i++;
+                        if (i >= itemCount) resolve(comments);
+                    });
+                })
+            });
+        });
+    });
+}
+
 if (!post) {
 
 if (sessionStorage.getItem("Posts") != null) {
@@ -108,11 +148,6 @@ if (sessionStorage.getItem("Posts") != null) {
         });
     });
 
-    setTimeout(() => {
-        if (posts.childElementCount == 0)
-            posts.innerHTML += "<p><br>nothing here yet :(</p>";
-    }, 5000);
-
     console.log("Posts gathered from API");
 }
 
@@ -121,22 +156,71 @@ if (sessionStorage.getItem("Posts") != null) {
 document.title = "namefox - loading";
 title.innerHTML = "loading";
 
-const dataRef = storageMod.ref(storage, "posts/" + post + "/data");
-const contentRef = storageMod.ref(storage, "posts/" + post + "/content");
-const imageRef = storageMod.ref(storage, "posts/" + post + "/image");
+const saved = sessionStorage.getItem(post);
 
-storageMod.getDownloadURL(imageRef).then((img) => {
-    storageMod.getDownloadURL(dataRef).then((url) => {
-        parseData(url).then((data) => {
-            storageMod.getDownloadURL(contentRef).then((url2) => {
-                getURL(url2).then((content) => {
-                    document.title = "namefox - " + data.name;
-            
-                    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p>`;
-                })
+if (!saved) {
+    const dataRef = storageMod.ref(storage, "posts/" + post + "/data");
+    const contentRef = storageMod.ref(storage, "posts/" + post + "/content");
+    const imageRef = storageMod.ref(storage, "posts/" + post + "/image");
+
+    storageMod.getDownloadURL(imageRef).then((img) => {
+        storageMod.getDownloadURL(dataRef).then((url) => {
+            parseData(url).then((data) => {
+                storageMod.getDownloadURL(contentRef).then((url2) => {
+                    getURL(url2).then((content) => {
+                        document.title = "namefox - " + data.name;
+                
+                        document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments">`;
+                        
+                        sessionStorage.setItem(post, JSON.stringify(data));
+                        sessionStorage.setItem(post + "Content", content);
+                        sessionStorage.setItem(post + "Image", img);
+
+                        loadComments(post).then((comments) => {
+                            comments.forEach((comment) => {
+                                const c = `
+                                <div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);">
+                                    <div class="info">
+                                        <img src="${comment.profile_picture}" id="pfp">
+                                        <p><b>${comment.username}</b></p>
+                                    </div>
+                                
+                                    <p>${comment.text}</p>
+                                </div>`
+
+                                document.innerHTML += c;
+                            });
+                            document.innerHTML += "</div></div>";
+
+                            sessionStorage.setItem(post + "Comments", JSON.stringify(comments));
+                        });
+
+                        console.log("Post gathered from API");
+                    })
+                });
             });
         });
     });
-});
+} else {
+    const content = sessionStorage.getItem(post + "Content");
+    const img = sessionStorage.getItem(post + "Image");
+    const data = JSON.parse(saved);
+    const commentData = sessionStorage.getItem(post + "Comments");
+    const comments = JSON.parse(commentData);
+    comments.forEach((item) => {
+        const comment = `
+        <div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);">
+            <div class="info">
+                <img src="${comment.profile_picture}" id="pfp">
+                <p><b>${comment.username}</b></p>
+            </div>
+        
+            <p>${comment.text}</p>
+        </div>`
+    });
+
+    document.title = "namefox - " + data.name;
+    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p>${comments}`;
+}
 
 }

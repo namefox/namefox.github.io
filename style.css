@@ -185,3 +185,16 @@ h2 .skeleton-line {
 .invisible {
     display: none;
 }
+
+.comment .info {
+    display: flex;    
+}
+
+.comment .info * {
+    margin: 5px;
+}
+
+.comment img {
+    width: 32px;
+    transform: translateY(-25%);
+}
