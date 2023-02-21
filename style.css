@@ -1,22 +1,36 @@
+@font-face {
+    font-family: Arvo;
+    src: url(./assets/Arvo-Regular.ttf);
+
+    font-family: ArvoBold;
+    font-weight: bold;
+    src: url(./assets/Arvo-Bold.ttf);
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: Arvo, sans-serif;
-    text-align: center;
 }
 
 body,html {
     height: 100%;
+    text-align: center;
 }
 
 body {
-    background-color: #111;
+    background: #111111;
+    background: -moz-linear-gradient(right,  #111111 0%, #000000 100%);
+    background: -webkit-linear-gradient(right,  #111111 0%,#000000 100%);
+    background: linear-gradient(to right,  #111111 0%,#000000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111111', endColorstr='#000000',GradientType=1 );
+
     color: white;
 }
 
 a {
-    color: #FD4239;
+    color: #fd4239;
     text-decoration: none;
     transition: .3s filter;
 }
@@ -25,10 +39,33 @@ a:hover {
     filter: invert(75%);
 }
 
+input,button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #111;
+    border: 1px solid #fff;
+    color: white;
+}
+
+input[type=submit],button {
+    transition: .3s color, .3s background-color;
+}
+
+input[type=submit]:hover,button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #111;
+}
+
+input[type=submit]:active,button:active {
+    background-color: seagreen;
+    color: white;
+}
+
 .banner {
     width: 100%;
     height: 50%;
-    color: #FD4239;
+    color: #fd4239;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,8 +140,8 @@ h2 .skeleton-line {
     transform: scale(1.0);
 }
 
-.repo.noscale:hover {transform: scale(1);}
-.repo.noscale:active {background-color: #0b0b0b;box-shadow: 0 20px 20px black;}
+.repo.noscale:hover {transform:scale(1);}
+.repo.noscale:active {background-color:#0b0b0b;}
 
 .description {
     margin-top: 25px;
@@ -118,17 +155,14 @@ h2 .skeleton-line {
     margin-right: 25px;
 }
 
-@font-face {
-    font-family: Arvo;
-    src: url(./assets/Arvo-Regular.ttf);
-
-    font-family: ArvoBold;
-    font-weight: bold;
-    src: url(./assets/Arvo-Bold.ttf);
-}
-
 .markdown {
     line-height: 2rem;
+    text-align: left;
+}
+
+.markdown ul, .markdown ol {
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
@@ -137,4 +171,17 @@ h2 .skeleton-line {
 
 .markdown img {
     max-width: 100%;
+}
+
+.noscale img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.darker {
+    color: #771f1a;
+}
+
+.invisible {
+    display: none;
 }

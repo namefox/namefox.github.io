@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>namefox - sign in</title>
+
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" id="shortcutIcon">
+</head>
+<body>
+    <div class="banner">
+        <img src="../../favicon.ico">
+        <h1>sign in</h1>
+    </div>
+    <p><a id="switch">don't have an account?</a></p><br>
+
+    <form id="signIn" class="visible">
+        <input id="username" type="text" class="invisible" placeholder="username"><br>
+        <input id="email" type="email" placeholder="email"><br>
+        <input id="password" type="password" placeholder="password"><br>
+        <input id="confirm-password" type="password" class="invisible" placeholder="confirm password"><br>
+        <input type="submit" value="submit">
+
+        <p id="error"></p>
+    </form>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>

@@ -50,9 +50,9 @@ const loadJSON = (json) => {
         repos.innerHTML = "";
     }
 
-    document.title = "namefox - " + repoParam;
+    document.title = "namefox - " + repoParam.replaceAll("-", " ");
 
-    repoName.innerHTML = repoParam;
+    repoName.innerHTML = repoParam.replaceAll("-", " ");
     findReadme(json).then((t) => readme.innerHTML = marked.parse(t));
 
     image.innerHTML = "<img src=\"" + findImage(json) + "\">";
@@ -60,6 +60,21 @@ const loadJSON = (json) => {
 };
 
 const loadReleases = (json) => {
+    if (json.message === "Not Found") {
+        document.title = "namefox - not found";
+        image.innerHTML = "<img src=\"./repo.png\">";
+        repoName.innerHTML = "not found";
+        readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
+        repos.innerHTML = "";
+        return;
+    } else if (json.message) {
+        document.title = "namefox - error";
+        image.innerHTML = "<img src=\"./repo.png\">";
+        repoName.innerHTML = "error";
+        readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
+        repos.innerHTML = "";
+    }
+    
     repos.innerHTML = "";
     json.forEach((item) => {
         const div = document.createElement("div");
@@ -93,7 +108,7 @@ const loadReleases = (json) => {
 let saved = sessionStorage.getItem(repoParam + "Contents");
 let savedReleases = sessionStorage.getItem(repoParam + "Releases");
 
-if (repoParam.includes("../")) {
+if (repoParam && repoParam.includes("../")) {
     loadJSON([{name:"README.md",download_url:"./different-user.md"}]);
     loadReleases([]);
 
