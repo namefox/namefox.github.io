@@ -83,19 +83,38 @@ const isJson = (str) => {
 
 const loadComments = (post) => {
     return new Promise(resolve => {
-        const commentList = document.querySelector(".comments");
         const comments = [];
     
         const ref = storageMod.ref(storage, "posts/" + post);
         storageMod.listAll(ref).then((result) => {
-            let itemCount = result.items.length;
+            let itemCount = result.items.length + result.prefixes.length;
             let i = 0;
+
             result.items.forEach((item) => {
                 storageMod.getDownloadURL(item).then((url) => {
                     getURL(url).then((data) => {
                         if (isJson(data)) {
                             const json = JSON.parse(data);
                             const isValidComment = json.comment;
+                            console.log(json, isValidComment);
+
+                            if (isValidComment)
+                                comments.push(json);
+                        }
+
+                        i++;
+                        if (i >= itemCount) resolve(comments);
+                    });
+                })
+            });
+
+            result.prefixes.forEach((item) => {
+                storageMod.getDownloadURL(item).then((url) => {
+                    getURL(url).then((data) => {
+                        if (isJson(data)) {
+                            const json = JSON.parse(data);
+                            const isValidComment = json.comment;
+                            console.log(json, isValidComment);
 
                             if (isValidComment)
                                 comments.push(json);
@@ -109,6 +128,25 @@ const loadComments = (post) => {
         });
     });
 }
+
+const newComment = () => {
+    const textContent = document.getElementById("commentText");
+    
+    if (!auth.currentUser) {
+        window.location.href = "./sign";
+    }
+
+    const text = `{
+    "comment":true,
+    "profile_picture":"${auth.currentUser.photoURL}",
+    "username":"${auth.currentUser.displayName}",
+    "text":"${textContent.value}"
+}`
+    const ref = storageMod.ref(storage, "posts/" + post + "/" + auth.currentUser.uid);
+    storageMod.uploadString(ref, text).then(() => {
+        console.log("Uploaded comment: " + text);
+    });
+};
 
 if (!post) {
 
@@ -170,7 +208,7 @@ if (!saved) {
                     getURL(url2).then((content) => {
                         document.title = "namefox - " + data.name;
                 
-                        document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments">`;
+                        document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="${auth.currentUser.photoURL}"><p><b>${auth.currentUser.displayName}</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>`;
                         
                         sessionStorage.setItem(post, JSON.stringify(data));
                         sessionStorage.setItem(post + "Content", content);
@@ -188,9 +226,15 @@ if (!saved) {
                                     <p>${comment.text}</p>
                                 </div>`
 
-                                document.innerHTML += c;
+                                document.body.innerHTML += c;
                             });
-                            document.innerHTML += "</div></div>";
+                            document.body.innerHTML += "</div></div>";
+
+                            const form = document.getElementById("newComment");
+                            form.addEventListener("submit", e => {
+                                e.preventDefault();
+                                newComment();
+                            });
 
                             sessionStorage.setItem(post + "Comments", JSON.stringify(comments));
                         });
@@ -205,10 +249,12 @@ if (!saved) {
     const content = sessionStorage.getItem(post + "Content");
     const img = sessionStorage.getItem(post + "Image");
     const data = JSON.parse(saved);
-    const commentData = sessionStorage.getItem(post + "Comments");
-    const comments = JSON.parse(commentData);
-    comments.forEach((item) => {
-        const comment = `
+    const d = sessionStorage.getItem(post + "Comments");
+    const cms = JSON.parse(d);
+
+    const comments = "";
+    cms.forEach((comment) => {
+        const c = `
         <div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);">
             <div class="info">
                 <img src="${comment.profile_picture}" id="pfp">
@@ -217,10 +263,20 @@ if (!saved) {
         
             <p>${comment.text}</p>
         </div>`
+
+        comments += c;
     });
 
     document.title = "namefox - " + data.name;
-    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p>${comments}`;
+    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="../../assets/repo.png"><p><b>username</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>${comments}</div></div>`;
+
+    const form = document.getElementById("newComment");
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        newComment();
+    });
+
+    console.log("Post gathered from session");
 }
 
 }
