@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>namefox - sign in</title>
 
-    <link rel="stylesheet" href="../../style.css">
-    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" id="shortcutIcon">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" id="shortcutIcon">
 </head>
 <body>
     <div class="banner">
-        <img src="../../favicon.ico">
+        <img src="/favicon.ico">
         <h1>sign in</h1>
     </div>
     <p><a id="switch">don't have an account?</a></p><br>
@@ -21,7 +21,9 @@
         <input id="email" type="email" placeholder="email"><br>
         <input id="password" type="password" placeholder="password"><br>
         <input id="confirm-password" type="password" class="invisible" placeholder="confirm password"><br>
-        <input type="submit" value="submit">
+        <input type="submit" value="submit"><br>
+
+        <label><input type="checkbox" id="terms">i agree to the <a href="privacy.html">privacy policy</a></label>
 
         <p id="error"></p>
     </form>

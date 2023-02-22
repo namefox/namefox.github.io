@@ -28,7 +28,7 @@ const parseRepoData = (json) => {
 
         const links = document.createElement("p");
 
-        links.innerHTML = `<a href="./assets/?repo=${item.name}">page</a> | <a href="https://github.com/namefox/${item.name}">github</a>${item.topics[0] === "game" ? ` | <a href="https://namefox.itch.io/${item.name}">itch.io</a>` : ""}`;
+        links.innerHTML = `<a href="/assets/?repo=${item.name}">page</a> | <a href="https://github.com/namefox/${item.name}">github</a>${item.topics[0] === "game" ? ` | <a href="https://namefox.itch.io/${item.name}">itch.io</a>` : ""}`;
 
         div.append(links);
 

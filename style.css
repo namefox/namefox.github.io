@@ -1,10 +1,10 @@
 @font-face {
     font-family: Arvo;
-    src: url(./assets/Arvo-Regular.ttf);
+    src: url(/assets/Arvo-Regular.ttf);
 
     font-family: ArvoBold;
     font-weight: bold;
-    src: url(./assets/Arvo-Bold.ttf);
+    src: url(/assets/Arvo-Bold.ttf);
 }
 
 * {

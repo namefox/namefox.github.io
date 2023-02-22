@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>old projects</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="banner">
+        <img src="/assets/repo.png">
+        <h1>old projects</h1>
+    </div>
+    <p>some of these might not work, as i do not have any access<br>to the projects themselves, only the builds.</p>
+    <p><a href="/about">go back</a></p>
+
+    <div id="list-wrapper" class="repo noscale markdown">
+        <ul id="list">
+            <li><div class="skeleton-line big"></div></li>
+            <li><div class="skeleton-line big"></div></li>
+            <li><div class="skeleton-line big"></div></li>
+            <li><div class="skeleton-line big"></div></li>
+            <li><div class="skeleton-line big"></div></li>
+        </ul>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getStorage, listAll, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAxIwTW-9uuxZ3utmsLkXmKD3N8mt-tww",
+            authDomain: "namefox-base.firebaseapp.com",
+            projectId: "namefox-base",
+            storageBucket: "namefox-base.appspot.com",
+            messagingSenderId: "298745688724",
+            appId: "1:298745688724:web:7338c375a739b59618fa81"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage();
+
+        listAll(ref(storage, "/old")).then((result) => {
+            const ul = document.getElementById("list");
+
+            let i = 0;
+            result.items.forEach(item => {
+                const li = document.createElement("li");
+
+                const a = document.createElement("a");
+                a.innerHTML = item.name;
+
+                getDownloadURL(item).then((url) => {
+                    a.href = url;
+                    li.appendChild(a);
+
+                    if (i == 0) ul.innerHTML = "";
+                    ul.appendChild(li);
+
+                    i++;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

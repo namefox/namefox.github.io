@@ -31,20 +31,20 @@ const findImage = (json) => {
         }
     });
 
-    return "./repo.png";
+    return "/repo.png";
 };
 
 const loadJSON = (json) => {
     if (json.message === "Not Found") {
         document.title = "namefox - not found";
-        image.innerHTML = "<img src=\"./repo.png\">";
+        image.innerHTML = "<img src=\"/repo.png\">";
         repoName.innerHTML = "not found";
         readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
         return;
     } else if (json.message) {
         document.title = "namefox - not err";
-        image.innerHTML = "<img src=\"./repo.png\">";
+        image.innerHTML = "<img src=\"/repo.png\">";
         repoName.innerHTML = "error";
         readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
@@ -62,14 +62,14 @@ const loadJSON = (json) => {
 const loadReleases = (json) => {
     if (json.message === "Not Found") {
         document.title = "namefox - not found";
-        image.innerHTML = "<img src=\"./repo.png\">";
+        image.innerHTML = "<img src=\"/repo.png\">";
         repoName.innerHTML = "not found";
         readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
         return;
     } else if (json.message) {
         document.title = "namefox - error";
-        image.innerHTML = "<img src=\"./repo.png\">";
+        image.innerHTML = "<img src=\"/repo.png\">";
         repoName.innerHTML = "error";
         readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
@@ -108,8 +108,8 @@ const loadReleases = (json) => {
 let saved = sessionStorage.getItem(repoParam + "Contents");
 let savedReleases = sessionStorage.getItem(repoParam + "Releases");
 
-if (repoParam && repoParam.includes("../")) {
-    loadJSON([{name:"README.md",download_url:"./different-user.md"}]);
+if (repoParam && repoParam.includes("/")) {
+    loadJSON([{name:"README.md",download_url:"/different-user.md"}]);
     loadReleases([]);
 
     throw new Error("Security: Can not access repositories from different account");

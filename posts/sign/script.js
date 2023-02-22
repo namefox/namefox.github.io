@@ -50,7 +50,7 @@ switchLink.addEventListener("click", (e) => {
 const createAccount = () => {
     authMod.createUserWithEmailAndPassword(auth, email.value, password.value).then((result) => {
         const storage = storageMod.getStorage();
-        fetch("../../assets/repo.png").then(r => r.blob()).then((blob) => {
+        fetch("//assets/repo.png").then(r => r.blob()).then((blob) => {
             const ref = storageMod.ref(storage, "/users/" + result.user.uid + "/profile_picture");
             storageMod.uploadBytes(ref, blob).then(() => {
                 storageMod.getDownloadURL(ref).then((url) => {
@@ -75,6 +75,11 @@ const signIntoAccount = () => {
 };
 
 const checkSignUpRequirements = () => {
+    if (!terms.checked) {
+        error.innerText = "you must agree to continue";
+        return;
+    }
+    
     if (!username.value) {
         error.innerText = "username is empty";
         return;
@@ -104,6 +109,11 @@ const checkSignUpRequirements = () => {
 };
 
 const checkSignInRequirements = () => {
+    if (!terms.checked) {
+        error.innerText = "you must agree to continue";
+        return;
+    }
+
     if (!email.value) {
         error.innerText = "email is empty";
         return;

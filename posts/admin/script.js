@@ -17,8 +17,8 @@ const auth = authMod.getAuth();
 const storage = storageMod.getStorage();
 
 authMod.onAuthStateChanged(auth, (user) => {
-    if (user == null) window.location.href = "../sign/?redirect=../admin";
-    else if (user.uid !== "xFHBixF9jCPXEdzNz9ZDwHXYJeI2") window.location.href = "../sign/?redirect=../admin";
+    if (user == null) window.location.href = "/sign/?redirect=/admin";
+    else if (user.uid !== "xFHBixF9jCPXEdzNz9ZDwHXYJeI2") window.location.href = "/sign/?redirect=/admin";
     else {
         skeletonPage.remove();
 
@@ -74,7 +74,7 @@ newPost.addEventListener("submit", (e) => {
         storageMod.getDownloadURL(imgRef).then((url) => {
             storageMod.uploadString(ref, `{"name":"${title.value}","description":"${description.value}","type":"${type.value}","category":"${category.value}"}`).then(() => {
                 storageMod.uploadString(cRef, text).then(() => {
-                    window.location.href = "../?post=" + title.value.toLowerCase().replaceAll(" ", "_");
+                    window.location.href = "/?post=" + title.value.toLowerCase().replaceAll(" ", "_");
                 })
             });
         });
