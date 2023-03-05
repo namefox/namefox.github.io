@@ -26,25 +26,25 @@ const findReadme = (json) => {
 
 const findImage = (json) => {
     json.forEach(item => {
-        if (item.name === "favicon.ico") {
+        if (item.name === "favicon.ico" || item.name === "repo.png" || item.name === "logo.png") {
             return item.download_url;
         }
     });
 
-    return "/repo.png";
+    return "/assets/repo.png";
 };
 
 const loadJSON = (json) => {
     if (json.message === "Not Found") {
         document.title = "namefox - not found";
-        image.innerHTML = "<img src=\"/repo.png\">";
+        image.innerHTML = "<img src=\"/assets/repo.png\">";
         repoName.innerHTML = "not found";
         readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
         return;
     } else if (json.message) {
         document.title = "namefox - not err";
-        image.innerHTML = "<img src=\"/repo.png\">";
+        image.innerHTML = "<img src=\"/assets/repo.png\">";
         repoName.innerHTML = "error";
         readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
@@ -62,14 +62,14 @@ const loadJSON = (json) => {
 const loadReleases = (json) => {
     if (json.message === "Not Found") {
         document.title = "namefox - not found";
-        image.innerHTML = "<img src=\"/repo.png\">";
+        image.innerHTML = "<img src=\"/assets/repo.png\">";
         repoName.innerHTML = "not found";
         readme.innerHTML = "<h2>repository not found</h2><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";
         return;
     } else if (json.message) {
         document.title = "namefox - error";
-        image.innerHTML = "<img src=\"/repo.png\">";
+        image.innerHTML = "<img src=\"/assets/repo.png\">";
         repoName.innerHTML = "error";
         readme.innerHTML = "<h2>an error occurred</h2><br><p>" + json.message + "</p><br><p><a href=\"..\">go back</a></p>";
         repos.innerHTML = "";

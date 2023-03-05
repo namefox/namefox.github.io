@@ -5,9 +5,12 @@ for (let i = 0; i < 3; i++) {
     repos.innerHTML += skeleton + "\n";
 }
 
+let repoData;
+let filterRepoData;
 const parseRepoData = (json) => {
+    if (!json) json = [];
     if (json.message) {
-        console.log(json);
+        console.error(json);
         repos.innerHTML = "<p><br>error loading projects. try again later.<br>go to my <a href=\"https://github.com/namefox\">github</a> and <a href=\"https://namefox.itch.io\">itch.io</a> pages to see my projects.<br><br>" + json.message.toLowerCase().split(" (")[0] + "</p>";
         return;
     }
@@ -48,11 +51,103 @@ const parseRepoData = (json) => {
 let saved = sessionStorage.getItem("Repos");
 if (saved) {
     console.log("Repository data gathered from session");
-    parseRepoData(JSON.parse(saved));
+
+    const json = JSON.parse(saved);
+    parseRepoData(json);
+
+    repoData = json;
 } else {
     fetch("https://api.github.com/users/namefox/repos").then((r) => r.json()).then((json) => {
         parseRepoData(json);
         sessionStorage.setItem("Repos", JSON.stringify(json));
+
+        repoData = json;
+
         console.log("Repository data requested from API");
     });
 }
+
+const searchInput = document.getElementById("search");
+
+const search = () => {
+    let filter = [];
+    let queries = searchInput.value.toLowerCase().split(" ");
+
+    if (queries[0] === "") {
+        parseRepoData(repoData);
+        return;
+    }
+
+    let canUseDescription = true;
+    let canUseTopics = true;
+    let canUseName = true;
+
+    repoData.forEach(repo => {
+        let added = false;
+
+        // Go through queries
+        queries.forEach((query) => {
+            if (query === "") return;
+
+            if (query.startsWith("exclude:")) {
+                let exclude = query.split("exclude:")[1];
+
+                if (exclude === "description") canUseDescription = false;
+                else if (exclude === "name") canUseName = false;
+                else if (exclude === "topics") canUseTopics = false;
+
+                return;
+            } else if (query.startsWith("by:")) {
+                let by = query.split("by:")[1];
+
+                if (by === "description") {
+                    canUseDescription = true;
+                    canUseName = false;
+                    canUseTopics = false;
+                } else if (by === "name") {
+                    canUseDescription = false;
+                    canUseName = true;
+                    canUseTopics = false;
+                } else if (by === "topic") {
+                    canUseDescription = false;
+                    canUseName = false;
+                    canUseTopics = true;
+                }
+
+                return;
+            }
+
+            // Search for name
+            if (repo.name.toLowerCase().includes(query) && canUseName && !added) {
+                added = true;
+                filter.push(repo);
+            }
+            
+            // Search for description
+            if (repo.description.toLowerCase().includes(query) && canUseDescription && !added) {
+                added = true;
+                filter.push(repo);
+            }
+
+            // Search for topics
+            repo.topics.forEach(topic => {
+                if (topic.toLowerCase().replaceAll("-", " ").includes(query) && canUseTopics && !added) {
+                    added = true;
+                    filter.push(repo);
+                }
+            });
+        });
+
+    });
+
+    parseRepoData(filter);
+};
+
+searchInput.addEventListener("keyup", e => {
+    if (e.key === "Enter")
+        search();
+});
+
+searchInput.addEventListener("focusout", () => search());
+
+search();

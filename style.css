@@ -198,3 +198,9 @@ h2 .skeleton-line {
     width: 32px;
     transform: translateY(-25%);
 }
+
+#search {
+    width: 90%;
+    margin-left: 0;
+    padding: 5px;
+}
