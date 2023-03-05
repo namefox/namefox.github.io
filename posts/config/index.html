@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>namefox - your profile</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" id="shortcutIcon">
+</head>
+<body>
+    <div id="skeletonPage"><br><br><br><br><br><br><br>
+        <div class="banner">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-line big"></div>
+        </div>
+    </div>
+
+    <div id="mainPage" class="invisible">
+        <div class="banner">
+            <img id="picture">
+            <h1 id="title">profile</h1>
+        </div>
+    
+        <p><a href="..">go back</a></p><br>
+
+        <form id="updateUser">
+            <input placeholder="username" name="username"><br>
+            <p>picture: <input name="profilePicture" type="file"><br>
+
+            <input name="submit" type="submit" value="update">
+        </form>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>

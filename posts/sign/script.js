@@ -23,6 +23,14 @@ const switchLink = document.getElementById("switch");
 const error = document.getElementById("error");
 const form = document.getElementById("signIn");
 
+authMod.onAuthStateChanged(auth, (user) => {
+    if (user != null) {
+        const redirect = new URLSearchParams(window.location.search).get("redirect");
+        if (redirect) window.location.href = redirect;
+        else window.location.href = "..";
+    }
+});
+
 let signUp = false;
 const replace = () => {
     signUp = !signUp;
