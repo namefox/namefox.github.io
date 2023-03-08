@@ -268,7 +268,7 @@ if (!saved) {
     });
 
     document.title = "namefox - " + data.name;
-    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="//assets/repo.png"><p><b>username</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>${comments}</div></div>`;
+    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="/assets/images/repo.png"><p><b>username</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>${comments}</div></div>`;
 
     const form = document.getElementById("newComment");
     form.addEventListener("submit", e => {

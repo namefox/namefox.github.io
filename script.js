@@ -137,8 +137,14 @@ const search = () => {
                 }
             });
         });
-
     });
+
+    if (!filter.length) {
+        filter = repoData;
+
+        searchInput.value = "";
+        searchInput.setAttribute("placeholder", "no results found");
+    }
 
     parseRepoData(filter);
 };

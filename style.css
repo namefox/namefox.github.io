@@ -1,10 +1,10 @@
 @font-face {
     font-family: Arvo;
-    src: url(/assets/Arvo-Regular.ttf);
+    src: url(/assets/fonts/Arvo-Regular.ttf);
 
-    font-family: ArvoBold;
+    font-family: Arvo-Bold;
     font-weight: bold;
-    src: url(/assets/Arvo-Bold.ttf);
+    src: url(/assets/fonts/Arvo-Bold.ttf);
 }
 
 * {
@@ -12,6 +12,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: Arvo, sans-serif;
+    line-height: 1.5rem;
 }
 
 body,html {
@@ -42,8 +43,8 @@ a:hover {
 input,button {
     padding: 10px;
     margin: 10px;
-    background-color: #111;
-    border: 1px solid #fff;
+    background-color: #111111;
+    border: 1px solid #ffffff;
     color: white;
 }
 
@@ -54,12 +55,29 @@ input[type=submit],button {
 input[type=submit]:hover,button:hover {
     cursor: pointer;
     background-color: white;
-    color: #111;
+    color: #111111;
 }
 
 input[type=submit]:active,button:active {
     background-color: seagreen;
     color: white;
+}
+
+pre {
+    margin: 20px;
+    padding: 20px;
+    background-color: #cccccc10;
+}
+
+pre code {
+    background-color: transparent !important;
+}
+
+code {
+    padding: 5px;
+    margin: 5px;
+    background-color: #cccccc10;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .banner {
@@ -92,7 +110,7 @@ input[type=submit]:active,button:active {
     padding: 50px;
     background-color: #0b0b0b;
     border-radius: 50px;
-    box-shadow: 0 5px 10px black;
+    border: 5px solid gray;
     transition: .3s all;
 }
 
@@ -130,18 +148,16 @@ h2 .skeleton-line {
 }
 
 .repo:hover {
-    box-shadow: 0 20px 20px black;
     transform: scale(1.1);
 }
 
 .repo:active {
-    box-shadow: 0 0 20px black;
-    background-color: black;
     transform: scale(1.0);
+    filter: invert(100%);
 }
 
 .repo.noscale:hover {transform:scale(1);}
-.repo.noscale:active {background-color:#0b0b0b;}
+.repo.noscale:active {filter: none;}
 
 .description {
     margin-top: 25px;
@@ -155,7 +171,7 @@ h2 .skeleton-line {
     margin-right: 25px;
 }
 
-.markdown {
+.markdown, pre {
     line-height: 2rem;
     text-align: left;
 }
