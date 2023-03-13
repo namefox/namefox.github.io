@@ -17,7 +17,7 @@ const auth = authMod.getAuth();
 const storage = storageMod.getStorage();
 
 authMod.onAuthStateChanged(auth, (user) => {
-    if (user == null) window.location.href = "/sign/?redirect=/posts/config";
+    if (user == null) window.location.href = "/sign/?redirect=posts.config";
 
     else {
         skeletonPage.remove();
@@ -61,5 +61,11 @@ updateUser.addEventListener("submit", e => {
         }).then(() => window.location.reload());
     }
 });
+
+signOut.addEventListener("click", e => {
+    authMod.signOut(auth).then(() => {
+        window.location.href = "/posts/";
+    });
+})
 
 }

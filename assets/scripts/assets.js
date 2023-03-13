@@ -108,34 +108,35 @@ const loadReleases = (json) => {
     }
 };
 
-let saved = sessionStorage.getItem(repoParam + "Contents");
-let savedReleases = sessionStorage.getItem(repoParam + "Releases");
+if (repoParam) {
+    let saved = sessionStorage.getItem(repoParam + "Contents");
+    let savedReleases = sessionStorage.getItem(repoParam + "Releases");
 
-if (repoParam && repoParam.includes("/")) {
-    loadJSON([{name:"README.md",download_url:"/different-user.md"}]);
-    loadReleases([]);
+    if (repoParam.includes("/")) {
+        window.location.href = "/assets/";
+    }
 
-    throw new Error("Security: Can not access repositories from different account");
-}
+    if (saved) {
+        console.log("Project data gathered from session");
+        loadJSON(JSON.parse(saved));
+    } else {
+        fetch(`https://api.github.com/repos/namefox/${repoParam}/contents`).then((r) => r.json()).then((json) => {
+            loadJSON(json);
+            sessionStorage.setItem(repoParam + "Contents", JSON.stringify(json));
+            console.log("Project data requested from API");
+        });
+    }
 
-if (saved) {
-    console.log("Project data gathered from session");
-    loadJSON(JSON.parse(saved));
+    if (savedReleases) {
+        loadReleases(JSON.parse(savedReleases));
+        console.log("Project releases gathered from session");
+    } else {
+        fetch(`https://api.github.com/repos/namefox/${repoParam}/releases`).then((r) => r.json()).then((json) => {
+            loadReleases(json);
+            sessionStorage.setItem(repoParam + "Releases", JSON.stringify(json));
+            console.log("Project releases gathered from API");
+        });
+    }
 } else {
-    fetch(`https://api.github.com/repos/namefox/${repoParam}/contents`).then((r) => r.json()).then((json) => {
-        loadJSON(json);
-        sessionStorage.setItem(repoParam + "Contents", JSON.stringify(json));
-        console.log("Project data requested from API");
-    });
-}
-
-if (savedReleases) {
-    loadReleases(JSON.parse(savedReleases));
-    console.log("Project releases gathered from session");
-} else {
-    fetch(`https://api.github.com/repos/namefox/${repoParam}/releases`).then((r) => r.json()).then((json) => {
-        loadReleases(json);
-        sessionStorage.setItem(repoParam + "Releases", JSON.stringify(json));
-        console.log("Project releases gathered from API");
-    });
+    window.location.href = "/";
 }

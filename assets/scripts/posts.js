@@ -96,7 +96,6 @@ const loadComments = (post) => {
                         if (isJson(data)) {
                             const json = JSON.parse(data);
                             const isValidComment = json.comment;
-                            console.log(json, isValidComment);
 
                             if (isValidComment)
                                 comments.push(json);
@@ -133,7 +132,7 @@ const newComment = () => {
     const textContent = document.getElementById("commentText");
     
     if (!auth.currentUser) {
-        window.location.href = "/sign";
+        window.location.href = "/posts/sign?redirect=posts" + window.location.href;
     }
 
     const text = `{
@@ -191,8 +190,9 @@ if (sessionStorage.getItem("Posts") != null) {
 
 } else {
 
+title.innerHTML = "loading...";
 document.title = "namefox - loading";
-title.innerHTML = "loading";
+image.src = "/assets/images/repo.png";
 
 const saved = sessionStorage.getItem(post);
 
@@ -206,9 +206,17 @@ if (!saved) {
             parseData(url).then((data) => {
                 storageMod.getDownloadURL(contentRef).then((url2) => {
                     getURL(url2).then((content) => {
+                        let user = auth.currentUser;
+                        if (!user) {
+                            user = {
+                                photoURL: "/assets/images/repo.png",
+                                displayName: "guest"
+                            }
+                        }
+
                         document.title = "namefox - " + data.name;
                 
-                        document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="${auth.currentUser.photoURL}"><p><b>${auth.currentUser.displayName}</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>`;
+                        document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="${user.photoURL}"><p><b>${user.displayName}</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>`;
                         
                         sessionStorage.setItem(post, JSON.stringify(data));
                         sessionStorage.setItem(post + "Content", content);
@@ -252,7 +260,7 @@ if (!saved) {
     const d = sessionStorage.getItem(post + "Comments");
     const cms = JSON.parse(d);
 
-    const comments = "";
+    let comments = "";
     cms.forEach((comment) => {
         const c = `
         <div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);">
@@ -268,7 +276,7 @@ if (!saved) {
     });
 
     document.title = "namefox - " + data.name;
-    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="/assets/images/repo.png"><p><b>username</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>${comments}</div></div>`;
+    document.body.innerHTML = `<img src="${img}" width="auto" height="50%"></div><h1>${data.name}</h1><p><i>${data.description}</i></p><p class="darker">${data.type} | ${data.category}</p><br>${content}<br><p><a href="..">go back</a> | <a href=".">more</a></p><div class="comments"><h2>comments</h2><div id="comments"><div class="comment markdown repo" style="width:80%;transform:translateX(12.5%);"><form id="newComment"><div class="info"><img id="pfp" src="/assets/images/repo.png"><p><b id="username">username</b></p></div><textarea id="commentText"></textarea><br><input type="submit" value="post comment"></form></div>${comments}</div></div>`;
 
     const form = document.getElementById("newComment");
     form.addEventListener("submit", e => {
@@ -277,6 +285,15 @@ if (!saved) {
     });
 
     console.log("Post gathered from session");
+
+    authMod.onAuthStateChanged(auth, user => {
+        if (user) {
+            username.innerText = user.displayName;
+            pfp.src = user.photoURL;
+        } else {
+            username.innerText = "guest";
+        }
+    });
 }
 
 }

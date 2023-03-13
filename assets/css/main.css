@@ -1,3 +1,21 @@
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #fd4239;
+    border-radius: 50px;
+    transition: .3s all;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #771f1a;
+}
+
 @font-face {
     font-family: Arvo;
     src: url(/assets/fonts/Arvo-Regular.ttf);
@@ -13,19 +31,26 @@
     box-sizing: border-box;
     font-family: Arvo, sans-serif;
     line-height: 1.5rem;
+    scroll-behavior: smooth;
 }
 
-body,html {
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body,
+html {
     height: 100%;
     text-align: center;
 }
 
 body {
     background: #111111;
-    background: -moz-linear-gradient(right,  #111111 0%, #000000 100%);
-    background: -webkit-linear-gradient(right,  #111111 0%,#000000 100%);
-    background: linear-gradient(to right,  #111111 0%,#000000 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111111', endColorstr='#000000',GradientType=1 );
+    background: -moz-linear-gradient(right, #111111 0%, #000000 100%);
+    background: -webkit-linear-gradient(right, #111111 0%, #000000 100%);
+    background: linear-gradient(to right, #111111 0%, #000000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#111111', endColorstr='#000000', GradientType=1);
 
     color: white;
 }
@@ -40,7 +65,8 @@ a:hover {
     filter: invert(75%);
 }
 
-input,button {
+input,
+button {
     padding: 10px;
     margin: 10px;
     background-color: #111111;
@@ -48,17 +74,21 @@ input,button {
     color: white;
 }
 
-input[type=submit],button {
+input[type=submit],
+button {
     transition: .3s color, .3s background-color;
 }
 
-input[type=submit]:hover,button:hover {
+input[type=submit]:hover,
+button:hover {
     cursor: pointer;
     background-color: white;
     color: #111111;
 }
 
-input[type=submit]:active,button:active {
+input[type=submit]:active,
+button:active {
+    transition: none;
     background-color: seagreen;
     color: white;
 }
@@ -87,6 +117,24 @@ code {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.banner.home {
+    height: 100%;
+    flex-direction: column;
+    color: white;
+    gap: 25px;
+    font-size: larger;
+    z-index: -5;
+}
+
+.banner.home h1 {
+    color: #fd4239;
+}
+
+.title-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .banner img {
@@ -128,7 +176,9 @@ code {
 }
 
 @keyframes skeleton-pulse {
-    from, to {
+
+    from,
+    to {
         background-color: gray;
     }
 
@@ -156,8 +206,13 @@ h2 .skeleton-line {
     filter: invert(100%);
 }
 
-.repo.noscale:hover {transform:scale(1);}
-.repo.noscale:active {filter: none;}
+.repo.noscale:hover {
+    transform: scale(1);
+}
+
+.repo.noscale:active {
+    filter: none;
+}
 
 .description {
     margin-top: 25px;
@@ -171,17 +226,24 @@ h2 .skeleton-line {
     margin-right: 25px;
 }
 
-.markdown, pre {
+.markdown,
+pre {
     line-height: 2rem;
     text-align: left;
 }
 
-.markdown ul, .markdown ol {
+.markdown ul,
+.markdown ol {
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
-.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
     margin-bottom: 20px;
 }
 
@@ -203,7 +265,7 @@ h2 .skeleton-line {
 }
 
 .comment .info {
-    display: flex;    
+    display: flex;
 }
 
 .comment .info * {
@@ -213,53 +275,6 @@ h2 .skeleton-line {
 .comment img {
     width: 32px;
     transform: translateY(-25%);
-}
-
-.timeline {
-    width: 90%;
-    min-height: 250px;
-    margin: 0 auto;
-}
-
-.timeline .timeline-bar {
-    background-color: white;
-    height: 5px;
-    width: 100%;
-    border-radius: 50px;
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 20px;
-}
-
-.timeline .timeline-bar .timeline-dot {
-    transform: translateY(calc(-50% + 2.5px));
-    color: transparent;
-    width: 10px;
-    height: 10px;
-    border-radius: 100%;
-    background-color: white;
-    font-size: xx-small;
-    transition: .3s transform, .3s background-color, .3s color;
-}
-
-.timeline .timeline-bar .timeline-dot::after {
-    width: 100px;
-    text-align: center;
-    content: attr(data-time);
-    position: absolute;
-    transform: translate(-50%, -100%);
-}
-
-.timeline .timeline-bar .timeline-dot.selected {
-    color: white;
-    background-color: #fd4239;
-    transform: translateY(calc(-50% - 20px)) scale(150%);
-}
-
-.timeline .timeline-item {
-    background-color: #fd423980;
-    padding: 50px;
-    min-height: 180px;
 }
 
 #search {

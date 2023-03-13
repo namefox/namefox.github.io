@@ -17,8 +17,8 @@ const auth = authMod.getAuth();
 const storage = storageMod.getStorage();
 
 authMod.onAuthStateChanged(auth, (user) => {
-    if (user == null) window.location.href = "/sign/?redirect=/admin";
-    else if (user.uid !== "xFHBixF9jCPXEdzNz9ZDwHXYJeI2") window.location.href = "/sign/?redirect=/admin";
+    if (user == null) window.location.href = "/sign/?redirect=posts.admin";
+    else if (user.uid !== "xFHBixF9jCPXEdzNz9ZDwHXYJeI2") window.location.href = "/sign/?redirect=posts.admin";
     else {
         skeletonPage.remove();
 

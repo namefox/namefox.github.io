@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>namefox - posts</title>
 
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" id="shortcutIcon">
 </head>
-<body class="postBody">
+<body>
     <div class="banner">
-        <img src="/favicon.ico">
+        <img src="/favicon.ico" id="image">
         <h1 id="title">posts</h1>
     </div>
 
-    <p><a href="/">go back</a><span class="not-logged-in"> | <a href="sign/?redirect=..">sign in</a></span><span class="admin invisible"> | <a href="admin/">admin</a></span><span class="logged-in invisible"> | <a href="config/">profile</a></span></p><br>
+    <p><a href="/">go back</a><span class="not-logged-in"> | <a href="/posts/sign/?redirect=posts">sign in</a></span><span class="admin invisible"> | <a href="/posts/admin.html">admin</a></span><span class="logged-in invisible"> | <a href="/posts/config.html">profile</a></span></p><br>
 
     <div id="posts">
         
     </div>
 
-    <script src="/assets/scripts/themes.js"></script>
-    <script src="/posts/script.js" type="module"></script>
+    <script src="/assets/scripts/libs/themes.js"></script>
+    <script src="/assets/scripts/posts.js" type="module"></script>
 </body>
 </html>

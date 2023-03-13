@@ -5,6 +5,18 @@ for (let i = 0; i < 3; i++) {
     repos.innerHTML += skeleton + "\n";
 }
 
+const findStringIn = (array, string) => {
+    let index = -1;
+    let i = 0;
+    array.forEach(str => {
+        if (string.toLowerCase() === str.toLowerCase())
+            index = i;
+        i++;
+    });
+
+    return index;
+}
+
 let repoData;
 let filterRepoData;
 const parseRepoData = (json) => {
@@ -29,9 +41,10 @@ const parseRepoData = (json) => {
         h1.innerText = item.name.replaceAll("-", " ") + (item.fork ? " (fork)" : "");
         div.append(h1);
 
-        const links = document.createElement("p");
+        let game = findStringIn(item.topics, "game") >= 0;
 
-        links.innerHTML = `<a href="/assets/?repo=${item.name}">page</a> | <a href="https://github.com/namefox/${item.name}">github</a>${item.topics[0] === "game" ? ` | <a href="https://namefox.itch.io/${item.name}">itch.io</a>` : ""}`;
+        const links = document.createElement("p");
+        links.innerHTML = `<a href="/assets/?repo=${item.name}">page</a> | <a href="https://github.com/namefox/${item.name}" target="_blank">github</a>${game ? ` | <a href="https://namefox.itch.io/${item.name}" target="_blank">itch.io</a>` : ""}`;
 
         div.append(links);
 
@@ -115,6 +128,11 @@ const search = () => {
                 }
 
                 return;
+            }
+
+            // Jump to page if repo name is equal
+            if (repo.name.toLowerCase() === query) {
+                window.location.href = "/assets/?repo=" + repo.name;
             }
 
             // Search for name

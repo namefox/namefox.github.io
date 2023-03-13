@@ -6,7 +6,7 @@ const themeUpdate = (theme) => {
         if (lightTheme) lightTheme.remove();
     } else {
         document.body.classList.add("light");
-        document.head.innerHTML += "<link rel=\"stylesheet\" href=\"/assets/css/light_mode.css\" id=\"lightTheme\">"
+        document.head.innerHTML += "<link rel=\"stylesheet\" href=\"/assets/css/libs/themes.css\" id=\"lightTheme\">"
     }
 };
 

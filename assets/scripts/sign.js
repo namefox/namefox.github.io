@@ -26,7 +26,7 @@ const form = document.getElementById("signIn");
 authMod.onAuthStateChanged(auth, (user) => {
     if (user != null) {
         const redirect = new URLSearchParams(window.location.search).get("redirect");
-        if (redirect) window.location.href = redirect;
+        if (redirect) window.location.href = "/" + redirect.replaceAll(".", "/");
         else window.location.href = "..";
     }
 });
@@ -67,7 +67,7 @@ const createAccount = () => {
                         photoURL: url
                     }).then(() => {
                         const redirect = new URLSearchParams(window.location.search).get("redirect");
-                        if (redirect) window.location.href = redirect;
+                        if (redirect) window.location.href = "/" + redirect.replaceAll(".", "/");
                     });
                 });
             })
@@ -78,7 +78,7 @@ const createAccount = () => {
 const signIntoAccount = () => {
     authMod.signInWithEmailAndPassword(auth, email.value, password.value).then((result) => {
         const redirect = new URLSearchParams(window.location.search).get("redirect");
-        if (redirect) window.location.href = redirect;
+        if (redirect) window.location.href = "/" + redirect.replaceAll(".", "/");
     });
 };
 
